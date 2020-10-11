@@ -4,12 +4,32 @@
 ## Write a short comment describing this function
 
 makeCacheMatrix <- function(x = matrix()) {
-
+  s <- NULL           # s is our local variable
+  set <- function(y){
+    x <<- y # assigning value to object 'x', which is in different environment. Hence <<-. 
+    s <<- NULL
+  }
+  get <- function()x
+  setInverse <- function(inverse) s <<- inverse
+  getInverse <- function() s 
+  list(set = set, get = get, 
+       setInverse = setInverse, 
+       getInverse = getInverse)
 }
+
 
 
 ## Write a short comment describing this function
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
-}
+  s <- x$getInverse()
+  if(!is.null(s)){
+    message("getting cached data")
+    return(s)
+  }
+  my_matrix <- x$get()
+  s <- solve(my_matrix,...)
+  x$setInverse(s)
+  s
+  }
